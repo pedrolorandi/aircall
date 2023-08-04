@@ -6,10 +6,9 @@ function IconCall({ direction, callType }) {
       return (
         <svg
           fill="#e8be01"
-          version="1.1"
           xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 242.789 242.789"
           className="icon"
+          viewBox="0 0 250 250"
         >
           <path
             d="M185.789,64.395c-31.43,0-57,25.57-57,57c0,9.763,2.471,18.959,6.815,27h-28.418c4.344-8.041,6.814-17.237,6.814-27
@@ -23,10 +22,9 @@ function IconCall({ direction, callType }) {
     } else {
       return (
         <svg
-          version="1.1"
           xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 351.912 351.912"
           className="icon"
+          viewBox="0 0 380 380"
         >
           <g>
             <g>
@@ -60,11 +58,9 @@ function IconCall({ direction, callType }) {
   } else {
     return (
       <svg
-        fill="#000000"
-        version="1.1"
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 355.694 355.694"
         className="icon"
+        viewBox="0 0 380 380"
       >
         <g>
           <g>

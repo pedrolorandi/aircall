@@ -11,12 +11,13 @@
   border-bottom: 1px solid #dddddd;
 }
 
-#app .container-call .icon {
-  width: 1.5em;
+#app .icon {
+  width: 2em;
+  height: 2em;
 }
 
 #app .container-call .info {
-  margin-left: 0.5em;
+  margin-left: 1em;
 }
 
 #app .container-call .call-info {

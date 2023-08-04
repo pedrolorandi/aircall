@@ -21,7 +21,7 @@ function Activity({ call, onIconInfoClick }) {
         </span>
       </div>
       <div className="call-date">{formatDate(call.created_at)}</div>
-      <IconInfo onClick={() => onIconInfoClick()} />
+      <IconInfo onIconInfoClick={onIconInfoClick} id={call.id} />
     </div>
   );
 }

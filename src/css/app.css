@@ -27,6 +27,9 @@
   height: auto;
 }
 
+#app .container-archive {
+}
+
 #app .container-view::-webkit-scrollbar {
   width: 0.5em;
 }

@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 
 import Header from "./Header.jsx";
-import Activity from "./components/Activity.jsx";
 
 import axios from "axios";
+import ActivityFeed from "./components/ActivityFeed.jsx";
+import ActivityDetail from "./components/ActivityDetail.jsx";
+import IconArchive from "./components/IconArchive.jsx";
 
 const App = () => {
   const [state, setState] = useState({
@@ -30,23 +32,30 @@ const App = () => {
       .catch((error) => console.error(error));
   }, []);
 
-  const handleIconInfoClick = () => {
-    console.log("Hi");
+  const handleIconInfoClick = (id) => {
+    setState((prevState) => ({ ...prevState, view: "Detail", id: id }));
   };
+
+  console.log(state);
 
   return (
     <div className="container">
       <Header />
       <div className="container-view">
-        {state.calls.map((call) => {
-          return (
-            <Activity
-              key={call.id}
-              call={call}
-              onIconInfoClick={handleIconInfoClick}
-            />
-          );
-        })}
+        <h1>Feed</h1>
+        <div className="container-archived">
+          <IconArchive />
+        </div>
+        {state.view === "ActivityFeed" ? (
+          <ActivityFeed
+            view={state.view}
+            id={state.id}
+            calls={state.calls}
+            handleIconInfoClick={handleIconInfoClick}
+          />
+        ) : (
+          <ActivityDetail />
+        )}
       </div>
     </div>
   );

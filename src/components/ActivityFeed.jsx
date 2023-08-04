@@ -1,7 +1,17 @@
 import React from "react";
 
-function ActivityFeed({ call }) {
-  return <div>test</div>;
+import Activity from "./Activity.jsx";
+
+function ActivityFeed({ view, id, calls, handleIconInfoClick }) {
+  return calls.map((call) => {
+    return (
+      <Activity
+        key={call.id}
+        call={call}
+        onIconInfoClick={handleIconInfoClick}
+      />
+    );
+  });
 }
 
 export default ActivityFeed;
