@@ -29,7 +29,7 @@ function ActivityFeed({
       </div>
       <div className="container-links">
         <span className="link-archive" onClick={() => handleArchiveClick(view)}>
-          {view === "Feed" ? "Archive" : "Unarchive"}
+          {showCheckbox ? "Done" : view === "Feed" ? "Archive" : "Unarchive"}
         </span>
         <span
           className="link-archive"

@@ -6,6 +6,9 @@ import Header from "./Header.jsx";
 import axios from "axios";
 import ActivityFeed from "./components/ActivityFeed.jsx";
 import ActivityDetail from "./components/ActivityDetail.jsx";
+import archiveCalls from "./helpers/archiveCalls.js";
+
+import useFetchCalls from "./hooks/useFetchCalls.js";
 
 const BASE_URL = "https://cerulean-marlin-wig.cyclic.app";
 
@@ -22,27 +25,11 @@ const App = () => {
   const [archiveIds, setArchiveIds] = useState([]);
   const [fetchTrigger, setFetchTrigger] = useState(0);
 
-  useEffect(() => {
-    axios
-      .get(`${BASE_URL}/activities`)
-      .then((response) => {
-        const badCalls = [
-          "639a144e896e0d0f4bf88b31",
-          "639a143c896e0d0f4bf88b2e",
-          "639a10b8328500b1a0fa9c07",
-        ];
-        const filteredCalls = response.data.filter(
-          (call) => call.call_type !== undefined && !badCalls.includes(call.id)
-        );
-        const sortedCalls = filteredCalls.reverse();
+  const fetchedCalls = useFetchCalls(`${BASE_URL}/activities`, fetchTrigger);
 
-        setState((prevState) => ({
-          ...prevState,
-          calls: sortedCalls,
-        }));
-      })
-      .catch((error) => console.error(error));
-  }, [fetchTrigger]);
+  useEffect(() => {
+    setState((prevState) => ({ ...prevState, calls: fetchedCalls }));
+  }, [fetchedCalls]);
 
   const handleIconInfoClick = (back, id, call) => {
     setState((prevState) => ({ ...prevState, view: "Detail", back, id, call }));
@@ -57,28 +44,18 @@ const App = () => {
       view === "Feed" ? !call.is_archived : call.is_archived
     );
 
-    const requests = modifiedCalls.map((call) => {
-      return axios.patch(`${BASE_URL}/activities/${call.id}`, {
-        is_archived: view === "Feed" ? true : false,
-      });
-    });
-
-    Promise.all(requests)
-      .then((responses) => {
-        setFetchTrigger(fetchTrigger + 1);
-      })
+    archiveCalls(
+      `${BASE_URL}/activities`,
+      modifiedCalls.map((call) => call.id),
+      view === "Feed"
+    )
+      .then((response) => setFetchTrigger(fetchTrigger + 1))
       .catch((error) => console.error(error));
   };
 
   const handleArchiveClick = (view) => {
     if (showCheckbox) {
-      const requests = archiveIds.map((id) => {
-        return axios.patch(`${BASE_URL}/activities/${id}`, {
-          is_archived: view === "Feed" ? true : false,
-        });
-      });
-
-      Promise.all(requests)
+      archiveCalls(`${BASE_URL}/activities`, archiveIds, view === "Feed")
         .then((responses) => {
           setArchiveIds([]);
           setShowChecbox(!showCheckbox);
