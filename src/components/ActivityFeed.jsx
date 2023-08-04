@@ -27,6 +27,7 @@ function ActivityFeed({
         return (
           <Activity
             key={call.id}
+            back={view}
             call={call}
             onIconInfoClick={handleIconInfoClick}
           />

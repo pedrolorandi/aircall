@@ -1,13 +1,13 @@
 import React from "react";
 
-function IconInfo({ onIconInfoClick, id }) {
+function IconInfo({ onIconInfoClick, back, id, call }) {
   return (
     <svg
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className="icon info"
       viewBox="-2 -2 28 28"
-      onClick={() => onIconInfoClick(id)}
+      onClick={() => onIconInfoClick(back, id, call)}
     >
       <path
         d="M12 21.5C17.1086 21.5 21.25 17.3586 21.25 12.25C21.25 7.14137 17.1086 3 12 3C6.89137 3 2.75 7.14137 2.75 12.25C2.75 17.3586 6.89137 21.5 12 21.5Z"

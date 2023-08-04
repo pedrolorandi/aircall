@@ -46,3 +46,26 @@
   color: #aaa;
   font-size: 0.9em;
 }
+
+#app .container-menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 1em 1em 1em;
+}
+
+#app .container-menu .container-button {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+#app .container-menu .container-button .icon-button {
+  width: 1.4em;
+  height: 1.4em;
+  margin-right: 0.5em;
+}
+
+#app .container-menu .container-button span {
+  font-weight: bold;
+}

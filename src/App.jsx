@@ -12,6 +12,7 @@ const App = () => {
     view: "Feed",
     back: null,
     id: null,
+    call: null,
     calls: [],
   });
 
@@ -32,12 +33,12 @@ const App = () => {
       .catch((error) => console.error(error));
   }, []);
 
-  const handleIconInfoClick = (id) => {
-    setState((prevState) => ({ ...prevState, view: "Detail", id: id }));
+  const handleIconInfoClick = (back, id, call) => {
+    setState((prevState) => ({ ...prevState, view: "Detail", back, id, call }));
   };
 
   const handleIconViewClick = (view) => {
-    setState((prevState) => ({ ...prevState, view: view, id: null }));
+    setState((prevState) => ({ ...prevState, view, id: null }));
   };
 
   console.log(state);
@@ -54,7 +55,12 @@ const App = () => {
             handleIconViewClick={handleIconViewClick}
           />
         ) : (
-          <ActivityDetail back={state.back} id={state.id} />
+          <ActivityDetail
+            back={state.back}
+            id={state.id}
+            call={state.call}
+            handleBackLinkClick={handleIconViewClick}
+          />
         )}
       </div>
     </div>
