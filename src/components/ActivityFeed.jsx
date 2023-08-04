@@ -1,7 +1,7 @@
 import React from "react";
 
-function ActivityFeed(props) {
-  return <div></div>;
+function ActivityFeed({ call }) {
+  return <div>test</div>;
 }
 
 export default ActivityFeed;

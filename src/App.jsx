@@ -2,53 +2,51 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 
 import Header from "./Header.jsx";
-import axios from "axios";
+import Activity from "./components/Activity.jsx";
 
-import { getCallsGroupedByDate } from "./helpers/getCallsGroupedByDate.js";
-import IconCall from "./components/IconCall.jsx";
+import axios from "axios";
 
 const App = () => {
   const [state, setState] = useState({
     view: "ActivityFeed",
-    calls: {},
+    id: null,
+    calls: [],
   });
 
   useEffect(() => {
     axios
       .get("https://cerulean-marlin-wig.cyclic.app/activities")
       .then((response) => {
-        const callsGroupedByDate = getCallsGroupedByDate(response.data);
+        const filteredCalls = response.data.filter(
+          (call) => call.call_type !== undefined
+        );
+        const sortedCalls = filteredCalls.reverse();
 
         setState((prevState) => ({
           ...prevState,
-          calls: callsGroupedByDate,
+          calls: sortedCalls,
         }));
       })
       .catch((error) => console.error(error));
   }, []);
 
+  const handleIconInfoClick = () => {
+    console.log("Hi");
+  };
+
   return (
     <div className="container">
       <Header />
       <div className="container-view">
-        {Object.entries(state.calls)
-          .sort((a, b) => new Date(b[0]) - new Date(a[0]))
-          .map((date) => {
-            return (
-              <div key={date[0]} className="container-date">
-                <h2>{date[0]}</h2>
-                {date[1].map((call) => {
-                  return (
-                    <div key={call.id} className="activity-detail">
-                      <IconCall callType={call.direction} className="icon" />
-
-                      {call.id}
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })}
+        {state.calls.map((call) => {
+          return (
+            <Activity
+              key={call.id}
+              call={call}
+              onIconInfoClick={handleIconInfoClick}
+            />
+          );
+        })}
       </div>
     </div>
   );

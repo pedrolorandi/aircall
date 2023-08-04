@@ -1,0 +1,47 @@
+#app .container-call {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-top: 1px solid #dddddd;
+  padding: 1em;
+  cursor: pointer;
+}
+
+#app .container-call:last-child {
+  border-bottom: 1px solid #dddddd;
+}
+
+#app .container-call .icon {
+  width: 1.5em;
+}
+
+#app .container-call .info {
+  margin-left: 0.5em;
+}
+
+#app .container-call .call-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1em;
+}
+
+#app .container-call .call-info .call-caller {
+  font-weight: bold;
+  font-size: 1.15em;
+}
+
+#app .container-call .call-info .call-missed {
+  color: #c42e20;
+}
+
+#app .container-call .call-info .call-type {
+  color: #aaa;
+  margin-top: 0.25em;
+  font-size: 0.9em;
+}
+
+#app .container-call .call-date {
+  margin-left: auto;
+  color: #aaa;
+  font-size: 0.9em;
+}
