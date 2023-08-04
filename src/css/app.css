@@ -10,16 +10,38 @@
 }
 
 #app .container {
+  display: flex;
+  flex-direction: column;
   width: 376px;
   height: 666px;
-  z-index: 100;
-
   background: white;
   border-radius: 3px;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, .9);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.9);
 }
 
 #app .container-view {
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  overflow-y: scroll;
+  height: auto;
 }
 
+#app .container-view::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+#app .container-view::-webkit-scrollbar-thumb {
+  background-color: #888888;
+  border-radius: 1em;
+}
+
+#app .container-date {
+  text-align: center;
+}
+
+#app .container-date h2 {
+  color: #999999;
+  text-transform: uppercase;
+  font-size: 0.85em;
+}
