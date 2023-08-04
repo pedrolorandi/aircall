@@ -7,6 +7,8 @@ import axios from "axios";
 import ActivityFeed from "./components/ActivityFeed.jsx";
 import ActivityDetail from "./components/ActivityDetail.jsx";
 
+const BASE_URL = "https://cerulean-marlin-wig.cyclic.app/activities";
+
 const App = () => {
   const [state, setState] = useState({
     view: "Feed",
@@ -18,7 +20,7 @@ const App = () => {
 
   useEffect(() => {
     axios
-      .get("https://cerulean-marlin-wig.cyclic.app/activities")
+      .get(BASE_URL)
       .then((response) => {
         const filteredCalls = response.data.filter(
           (call) => call.call_type !== undefined
@@ -41,6 +43,14 @@ const App = () => {
     setState((prevState) => ({ ...prevState, view, id: null }));
   };
 
+  const handleArchiveAllClick = (calls, view) => {
+    const modifiedCalls = calls.filter((call) =>
+      view === "Feed" ? !call.is_archived : call.is_archived
+    );
+
+    console.log(modifiedCalls);
+  };
+
   console.log(state);
 
   return (
@@ -53,6 +63,7 @@ const App = () => {
             calls={state.calls}
             handleIconInfoClick={handleIconInfoClick}
             handleIconViewClick={handleIconViewClick}
+            handleArchiveAllClick={handleArchiveAllClick}
           />
         ) : (
           <ActivityDetail

@@ -8,6 +8,7 @@ function ActivityFeed({
   calls,
   handleIconInfoClick,
   handleIconViewClick,
+  handleArchiveAllClick,
 }) {
   return (
     <>
@@ -23,15 +24,34 @@ function ActivityFeed({
           <span>{view === "Feed" ? "Archived" : "Feed"}</span>
         </div>
       </div>
+      <div className="container-links">
+        <span
+          className="link-archive"
+          onClick={() => handleArchiveAllClick(calls, view)}
+        >
+          {view === "Feed" ? "Archive all" : "Unarchive all"}
+        </span>
+      </div>
       {calls.map((call) => {
-        return (
-          <Activity
-            key={call.id}
-            back={view}
-            call={call}
-            onIconInfoClick={handleIconInfoClick}
-          />
-        );
+        if (view === "Feed" && !call.is_archived) {
+          return (
+            <Activity
+              key={call.id}
+              back={view}
+              call={call}
+              onIconInfoClick={handleIconInfoClick}
+            />
+          );
+        } else if (view === "Archived" && call.is_archived) {
+          return (
+            <Activity
+              key={call.id}
+              back={view}
+              call={call}
+              onIconInfoClick={handleIconInfoClick}
+            />
+          );
+        }
       })}
     </>
   );
