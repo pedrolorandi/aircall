@@ -6,7 +6,7 @@ function IconInfo({ onIconInfoClick, id }) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className="icon info"
-      viewBox="0 0 24 24"
+      viewBox="-2 -2 28 28"
       onClick={() => onIconInfoClick(id)}
     >
       <path

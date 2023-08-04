@@ -6,11 +6,11 @@ import Header from "./Header.jsx";
 import axios from "axios";
 import ActivityFeed from "./components/ActivityFeed.jsx";
 import ActivityDetail from "./components/ActivityDetail.jsx";
-import IconArchive from "./components/IconArchive.jsx";
 
 const App = () => {
   const [state, setState] = useState({
-    view: "ActivityFeed",
+    view: "Feed",
+    back: null,
     id: null,
     calls: [],
   });
@@ -36,25 +36,25 @@ const App = () => {
     setState((prevState) => ({ ...prevState, view: "Detail", id: id }));
   };
 
+  const handleIconViewClick = (view) => {
+    setState((prevState) => ({ ...prevState, view: view, id: null }));
+  };
+
   console.log(state);
 
   return (
     <div className="container">
       <Header />
       <div className="container-view">
-        <h1>Feed</h1>
-        <div className="container-archived">
-          <IconArchive />
-        </div>
-        {state.view === "ActivityFeed" ? (
+        {state.view === "Feed" || state.view === "Archived" ? (
           <ActivityFeed
             view={state.view}
-            id={state.id}
             calls={state.calls}
             handleIconInfoClick={handleIconInfoClick}
+            handleIconViewClick={handleIconViewClick}
           />
         ) : (
-          <ActivityDetail />
+          <ActivityDetail back={state.back} id={state.id} />
         )}
       </div>
     </div>

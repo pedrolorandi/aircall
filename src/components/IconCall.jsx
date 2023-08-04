@@ -24,7 +24,7 @@ function IconCall({ direction, callType }) {
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="icon"
-          viewBox="0 0 380 380"
+          viewBox="-60 -60 480 480"
         >
           <g>
             <g>
@@ -60,7 +60,7 @@ function IconCall({ direction, callType }) {
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="icon"
-        viewBox="0 0 380 380"
+        viewBox="-60 -60 480 480"
       >
         <g>
           <g>
