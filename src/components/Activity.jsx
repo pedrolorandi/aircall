@@ -1,5 +1,6 @@
 import React from "react";
 
+// Import components and helper functions
 import IconCall from "./IconCall.jsx";
 import IconInfo from "./IconInfo.jsx";
 import getCallInfo from "../helpers/getCallInfo.js";
@@ -12,33 +13,36 @@ function Activity({
   showCheckbox,
   onCheckboxSelect,
 }) {
+  // Destructure the call object
+  const { id, direction, call_type, from, to, via, created_at } = call;
+
   return (
     <div className="container-call">
+      {/* If showCheckbox is true, display a checkbox */}
       {showCheckbox && (
         <input
           type="checkbox"
           name="callCheckbox"
-          onChange={() => onCheckboxSelect(call.id)}
+          onChange={() => onCheckboxSelect(id)}
         />
       )}
-      <IconCall direction={call.direction} callType={call.call_type} />
+      <IconCall direction={direction} callType={call_type} />
       <div className="call-info">
+        {/* Display the caller's number, using the "from" number for inbound calls and the "to" number for outbound calls */}
         <span
-          className={`call-caller ${
-            call.call_type === "missed" && "call-missed"
-          }`}
+          className={`call-caller ${call_type === "missed" && "call-missed"}`}
         >
-          {call.direction === "inbound" ? call.from || "Unknown" : call.to}
+          {direction === "inbound" ? from || "Unknown" : to}
         </span>
         <span className="call-type">
-          {getCallInfo(call.call_type)} {call.via}
+          {getCallInfo(call_type)} {via}
         </span>
       </div>
-      <div className="call-date">{formatDate(call.created_at)}</div>
+      <div className="call-date">{formatDate(created_at)}</div>
       <IconInfo
         onIconInfoClick={onIconInfoClick}
         back={back}
-        id={call.id}
+        id={id}
         call={call}
       />
     </div>

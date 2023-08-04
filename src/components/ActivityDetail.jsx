@@ -1,6 +1,6 @@
 import React from "react";
+// Import components and helper functions
 import IconUser from "./IconUser.jsx";
-
 import getCallInfo from "../helpers/getCallInfo.js";
 import formatDateToLongstring from "../helpers/formatDateToLongString.js";
 import formatTime from "../helpers/formatTime.js";
@@ -8,7 +8,8 @@ import formatType from "../helpers/formatType.js";
 import formatDuration from "../helpers/formatDuration.js";
 
 function ActivityDetail({ back, call, handleBackLinkClick }) {
-  console.log(call);
+  // Destructure the call object
+  const { direction, from, to, call_type, via, created_at, duration } = call;
 
   return (
     <>
@@ -21,23 +22,23 @@ function ActivityDetail({ back, call, handleBackLinkClick }) {
       <div className="container-user">
         <IconUser />
         <h1 className="info-number">
-          {call.direction === "inbound" ? call.from || "Unknown" : call.to}
+          {direction === "inbound" ? from || "Unknown" : to}
         </h1>
         <span className="info-type">
-          {getCallInfo(call.call_type)} {call.via}
+          {getCallInfo(call_type)} {via}
         </span>
       </div>
       <div className="container-call-info">
         <span className="call-info-date">
-          {formatDateToLongstring(call.created_at)}
+          {formatDateToLongstring(created_at)}
         </span>
         <div className="call-info-hour-type">
-          <span className="call-info-hour">{formatTime(call.created_at)}</span>
+          <span className="call-info-hour">{formatTime(created_at)}</span>
           <span className="call-info-type">
-            {formatType(call.call_type, call.direction)}
+            {formatType(call_type, direction)}
           </span>
           <span className="call-info-duration">
-            {call.duration && formatDuration(call.duration)}
+            {duration && formatDuration(duration)}
           </span>
         </div>
       </div>

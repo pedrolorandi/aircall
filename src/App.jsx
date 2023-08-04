@@ -1,18 +1,19 @@
+// Import necessary libraries, components, hooks, and helper functions
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-
 import Header from "./Header.jsx";
-
 import axios from "axios";
 import ActivityFeed from "./components/ActivityFeed.jsx";
 import ActivityDetail from "./components/ActivityDetail.jsx";
 import archiveCalls from "./helpers/archiveCalls.js";
-
 import useFetchCalls from "./hooks/useFetchCalls.js";
 
+// Define the base URL for the API
 const BASE_URL = "https://cerulean-marlin-wig.cyclic.app";
 
+// Main App component
 const App = () => {
+  // Define the main state for the app
   const [state, setState] = useState({
     view: "Feed",
     back: null,
@@ -21,24 +22,30 @@ const App = () => {
     calls: [],
   });
 
+  // Define state variables for checkbox visibility and selected calls
   const [showCheckbox, setShowChecbox] = useState(false);
   const [archiveIds, setArchiveIds] = useState([]);
   const [fetchTrigger, setFetchTrigger] = useState(0);
 
+  // Fetch calls using custom hook
   const fetchedCalls = useFetchCalls(`${BASE_URL}/activities`, fetchTrigger);
 
+  // Update main state with fetched calls
   useEffect(() => {
     setState((prevState) => ({ ...prevState, calls: fetchedCalls }));
   }, [fetchedCalls]);
 
+  // Handle click on info icon
   const handleIconInfoClick = (back, id, call) => {
     setState((prevState) => ({ ...prevState, view: "Detail", back, id, call }));
   };
 
+  // Handle click on view icon
   const handleIconViewClick = (view) => {
     setState((prevState) => ({ ...prevState, view, id: null }));
   };
 
+  // Handle click on "Archive All" or "Unarchive All" link
   const handleArchiveAllClick = (calls, view) => {
     const modifiedCalls = calls.filter((call) =>
       view === "Feed" ? !call.is_archived : call.is_archived
@@ -53,6 +60,7 @@ const App = () => {
       .catch((error) => console.error(error));
   };
 
+  // Handle click on "Archive" or "Unarchive" link
   const handleArchiveClick = (view) => {
     if (showCheckbox) {
       archiveCalls(`${BASE_URL}/activities`, archiveIds, view === "Feed")
@@ -67,19 +75,16 @@ const App = () => {
     }
   };
 
+  // Handle selection of checkbox
   const handleCheckboxSelection = (id) => {
-    let arrayIds = [...archiveIds];
-
-    if (!arrayIds.includes(id)) {
-      arrayIds.push(id);
+    if (!archiveIds.includes(id)) {
+      setArchiveIds([...archiveIds, id]);
     } else {
-      const newArrayIds = arrayIds.filter((arrayId) => arrayId !== id);
-      arrayIds = newArrayIds;
+      setArchiveIds(archiveIds.filter((arrayId) => arrayId !== id));
     }
-
-    setArchiveIds(arrayIds);
   };
 
+  // Render the app
   return (
     <div className="container">
       <Header />
@@ -108,6 +113,7 @@ const App = () => {
   );
 };
 
+// Render the app into the DOM
 ReactDOM.render(<App />, document.getElementById("app"));
 
 export default App;
