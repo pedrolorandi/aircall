@@ -26,8 +26,13 @@ const App = () => {
     axios
       .get(`${BASE_URL}/activities`)
       .then((response) => {
+        const badCalls = [
+          "639a144e896e0d0f4bf88b31",
+          "639a143c896e0d0f4bf88b2e",
+          "639a10b8328500b1a0fa9c07",
+        ];
         const filteredCalls = response.data.filter(
-          (call) => call.call_type !== undefined
+          (call) => call.call_type !== undefined && !badCalls.includes(call.id)
         );
         const sortedCalls = filteredCalls.reverse();
 
@@ -52,12 +57,20 @@ const App = () => {
       view === "Feed" ? !call.is_archived : call.is_archived
     );
 
-    console.log(modifiedCalls);
+    const requests = modifiedCalls.map((call) => {
+      return axios.patch(`${BASE_URL}/activities/${call.id}`, {
+        is_archived: view === "Feed" ? true : false,
+      });
+    });
+
+    Promise.all(requests)
+      .then((responses) => {
+        setFetchTrigger(fetchTrigger + 1);
+      })
+      .catch((error) => console.error(error));
   };
 
   const handleArchiveClick = (view) => {
-    console.log(view);
-
     if (showCheckbox) {
       const requests = archiveIds.map((id) => {
         return axios.patch(`${BASE_URL}/activities/${id}`, {
@@ -89,8 +102,6 @@ const App = () => {
 
     setArchiveIds(arrayIds);
   };
-
-  console.log(archiveIds);
 
   return (
     <div className="container">
