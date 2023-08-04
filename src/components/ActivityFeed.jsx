@@ -9,6 +9,9 @@ function ActivityFeed({
   handleIconInfoClick,
   handleIconViewClick,
   handleArchiveAllClick,
+  handleArchiveClick,
+  showCheckbox,
+  handleCheckboxSelection,
 }) {
   return (
     <>
@@ -25,6 +28,9 @@ function ActivityFeed({
         </div>
       </div>
       <div className="container-links">
+        <span className="link-archive" onClick={() => handleArchiveClick(view)}>
+          {view === "Feed" ? "Archive" : "Unarchive"}
+        </span>
         <span
           className="link-archive"
           onClick={() => handleArchiveAllClick(calls, view)}
@@ -40,6 +46,8 @@ function ActivityFeed({
               back={view}
               call={call}
               onIconInfoClick={handleIconInfoClick}
+              showCheckbox={showCheckbox}
+              onCheckboxSelect={handleCheckboxSelection}
             />
           );
         } else if (view === "Archived" && call.is_archived) {
@@ -49,6 +57,8 @@ function ActivityFeed({
               back={view}
               call={call}
               onIconInfoClick={handleIconInfoClick}
+              showCheckbox={showCheckbox}
+              onCheckboxSelect={handleCheckboxSelection}
             />
           );
         }

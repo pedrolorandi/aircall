@@ -7,7 +7,7 @@ import axios from "axios";
 import ActivityFeed from "./components/ActivityFeed.jsx";
 import ActivityDetail from "./components/ActivityDetail.jsx";
 
-const BASE_URL = "https://cerulean-marlin-wig.cyclic.app/activities";
+const BASE_URL = "https://cerulean-marlin-wig.cyclic.app";
 
 const App = () => {
   const [state, setState] = useState({
@@ -18,9 +18,13 @@ const App = () => {
     calls: [],
   });
 
+  const [showCheckbox, setShowChecbox] = useState(false);
+  const [archiveIds, setArchiveIds] = useState([]);
+  const [fetchTrigger, setFetchTrigger] = useState(0);
+
   useEffect(() => {
     axios
-      .get(BASE_URL)
+      .get(`${BASE_URL}/activities`)
       .then((response) => {
         const filteredCalls = response.data.filter(
           (call) => call.call_type !== undefined
@@ -33,7 +37,7 @@ const App = () => {
         }));
       })
       .catch((error) => console.error(error));
-  }, []);
+  }, [fetchTrigger]);
 
   const handleIconInfoClick = (back, id, call) => {
     setState((prevState) => ({ ...prevState, view: "Detail", back, id, call }));
@@ -51,7 +55,42 @@ const App = () => {
     console.log(modifiedCalls);
   };
 
-  console.log(state);
+  const handleArchiveClick = (view) => {
+    console.log(view);
+
+    if (showCheckbox) {
+      const requests = archiveIds.map((id) => {
+        return axios.patch(`${BASE_URL}/activities/${id}`, {
+          is_archived: view === "Feed" ? true : false,
+        });
+      });
+
+      Promise.all(requests)
+        .then((responses) => {
+          setArchiveIds([]);
+          setShowChecbox(!showCheckbox);
+          setFetchTrigger(fetchTrigger + 1);
+        })
+        .catch((error) => console.error(error));
+    } else {
+      setShowChecbox(!showCheckbox);
+    }
+  };
+
+  const handleCheckboxSelection = (id) => {
+    let arrayIds = [...archiveIds];
+
+    if (!arrayIds.includes(id)) {
+      arrayIds.push(id);
+    } else {
+      const newArrayIds = arrayIds.filter((arrayId) => arrayId !== id);
+      arrayIds = newArrayIds;
+    }
+
+    setArchiveIds(arrayIds);
+  };
+
+  console.log(archiveIds);
 
   return (
     <div className="container">
@@ -64,6 +103,9 @@ const App = () => {
             handleIconInfoClick={handleIconInfoClick}
             handleIconViewClick={handleIconViewClick}
             handleArchiveAllClick={handleArchiveAllClick}
+            handleArchiveClick={handleArchiveClick}
+            showCheckbox={showCheckbox}
+            handleCheckboxSelection={handleCheckboxSelection}
           />
         ) : (
           <ActivityDetail

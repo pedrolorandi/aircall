@@ -47,6 +47,10 @@
   font-size: 0.9em;
 }
 
+#app .container-call input {
+  margin-right: 1em;
+}
+
 #app .container-menu {
   display: flex;
   flex-direction: row;
@@ -72,11 +76,11 @@
 
 #app .container-links {
   display: flex;
-  padding: 0em 1em 1em 1em;
+  padding: 0.5em 1em 1em 1em;
+  justify-content: space-between;
 }
 
 #app .container-links .link-archive {
-  margin-left: auto;
   cursor: pointer;
   color: rgb(0, 85, 255);
 }
