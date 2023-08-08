@@ -19,13 +19,12 @@ function Activity({
   return (
     <div className="container-call">
       {/* If showCheckbox is true, display a checkbox */}
-      {showCheckbox && (
-        <input
-          type="checkbox"
-          name="callCheckbox"
-          onChange={() => onCheckboxSelect(id)}
-        />
-      )}
+      <input
+        type="checkbox"
+        name="callCheckbox"
+        className={`${showCheckbox && "visible"}`}
+        onChange={() => onCheckboxSelect(id)}
+      />
       <IconCall direction={direction} callType={call_type} />
       <div className="call-info">
         {/* Display the caller's number, using the "from" number for inbound calls and the "to" number for outbound calls */}
