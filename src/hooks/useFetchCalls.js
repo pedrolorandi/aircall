@@ -10,6 +10,7 @@ export default function useFetchCalls(url, trigger) {
   // Use useEffect to fetch data whenever the 'trigger' changes
   useEffect(() => {
     // Make a GET request to the provided URL
+
     axios
       .get(url)
       .then((response) => {
@@ -28,7 +29,9 @@ export default function useFetchCalls(url, trigger) {
         // Update the state with the sorted and filtered calls
         setData(sortedCalls);
       })
-      .catch((error) => console.error(error)); // Log any errors
+      .catch((error) => {
+        window.location.reload();
+      }); // Log any errors
   }, [trigger]); // Depend on 'trigger' to refetch data when it changes
 
   // Return the fetched data

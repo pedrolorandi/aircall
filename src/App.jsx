@@ -2,14 +2,15 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import Header from "./Header.jsx";
-import axios from "axios";
+
 import ActivityFeed from "./components/ActivityFeed.jsx";
 import ActivityDetail from "./components/ActivityDetail.jsx";
+import Loading from "./components/Loading.jsx";
 import archiveCalls from "./helpers/archiveCalls.js";
 import useFetchCalls from "./hooks/useFetchCalls.js";
 
 // Define the base URL for the API
-const BASE_URL = "https://cerulean-marlin-wig.cyclic.app";
+const BASE_URL = "https://cerulean-marlin-wig.cyclic.app/";
 
 // Main App component
 const App = () => {
@@ -26,9 +27,14 @@ const App = () => {
   const [showCheckbox, setShowChecbox] = useState(false);
   const [archiveIds, setArchiveIds] = useState([]);
   const [fetchTrigger, setFetchTrigger] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Fetch calls using custom hook
-  const fetchedCalls = useFetchCalls(`${BASE_URL}/activities`, fetchTrigger);
+  const fetchedCalls = useFetchCalls(
+    `${BASE_URL}/activities`,
+    fetchTrigger,
+    setIsLoading
+  );
 
   // Update main state with fetched calls
   useEffect(() => {
@@ -47,6 +53,8 @@ const App = () => {
 
   // Handle click on "Archive All" or "Unarchive All" link
   const handleArchiveAllClick = (calls, view) => {
+    setIsLoading(true);
+
     const modifiedCalls = calls.filter((call) =>
       view === "Feed" ? !call.is_archived : call.is_archived
     );
@@ -56,20 +64,32 @@ const App = () => {
       modifiedCalls.map((call) => call.id),
       view === "Feed"
     )
-      .then((response) => setFetchTrigger(fetchTrigger + 1))
-      .catch((error) => console.error(error));
+      .then((response) => {
+        setIsLoading(false);
+        setFetchTrigger(fetchTrigger + 1);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        window.location.reload();
+      });
   };
 
   // Handle click on "Archive" or "Unarchive" link
   const handleArchiveClick = (view) => {
     if (showCheckbox) {
+      setIsLoading(true);
+
       archiveCalls(`${BASE_URL}/activities`, archiveIds, view === "Feed")
         .then((responses) => {
           setArchiveIds([]);
           setShowChecbox(!showCheckbox);
+          setIsLoading(false);
           setFetchTrigger(fetchTrigger + 1);
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          setIsLoading(false);
+          window.location.reload();
+        });
     } else {
       setShowChecbox(!showCheckbox);
     }
@@ -88,6 +108,11 @@ const App = () => {
   return (
     <div className="container">
       <Header />
+      {isLoading && (
+        <div className="is-loading">
+          <Loading />
+        </div>
+      )}
       <div className="container-view">
         {state.view === "Feed" || state.view === "Archived" ? (
           <ActivityFeed

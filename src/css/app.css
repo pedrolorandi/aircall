@@ -17,6 +17,7 @@
   background: white;
   border-radius: 3px;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.9);
+  position: relative;
 }
 
 #app .container-view {
@@ -34,4 +35,14 @@
 #app .container-view::-webkit-scrollbar-thumb {
   background-color: #888888;
   border-radius: 1em;
+}
+
+#app .is-loading {
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
